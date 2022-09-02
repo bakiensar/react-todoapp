@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import Todo from './components/Todo'
+import Todoform from './components/Todoform'
 
 function App() {
   const [todoText, setTodoText] = useState('')
@@ -59,59 +61,25 @@ function App() {
   return (
     <div className="container my-5">
       <h1 className="text-center">TODO APP</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="input-group mb-3">
-          <input
-            value={todoText}
-            type="text"
-            className="form-control"
-            placeholder="Add Todo"
-            onChange={(event) => setTodoText(event.target.value)}
-          />
-          <button
-            className={`btn btn-${isEdit === true ? 'success' : 'primary'}`}
-            type="submit"
-          >
-            {isEdit === true ? 'SAVE' : 'DONE'}
-          </button>
-        </div>
-      </form>
+      <Todoform
+        handleSubmit={handleSubmit}
+        todoText={todoText}
+        setTodoText={setTodoText}
+        isEdit={isEdit}
+      />
       {todos.length <= 0 ? (
         <p className="text-center my-5">You don't have any todos yet. </p>
       ) : (
         <React.Fragment>
           {todos.map((item) => (
-            <div
-              className={`alert alert-${
-                item.isDone === true ? 'danger' : 'primary'
-              } d-flex justify-content-between`}
-            >
-              <p className="my-auto">{item.text}</p>
-              <div>
-                <button
-                  onClick={() => deleteTodo(item.id)}
-                  className="btn btn-sm btn-danger"
-                >
-                  Delete
-                </button>
-                <button
-                  onClick={() => {
-                    setIsEdit(true)
-                    setWillUpdateTodo(item.id)
-                    setTodoText(item.text)
-                  }}
-                  className="btn btn-success btn-sm mx-1 "
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => changeIsDone(item.id)}
-                  className="btn btn-sm btn-secondary"
-                >
-                  {item.isDone === false ? 'DONE' : 'UNDONE'}
-                </button>
-              </div>
-            </div>
+            <Todo
+              item={item}
+              deleteTodo={deleteTodo}
+              setIsEdit={setIsEdit}
+              setWillUpdateTodo={setWillUpdateTodo}
+              setTodoText={setTodoText}
+              changeIsDone={changeIsDone}
+            />
           ))}
         </React.Fragment>
       )}
