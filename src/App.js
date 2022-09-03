@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Todo from './components/Todo'
 import Todoform from './components/Todoform'
 
@@ -8,9 +8,20 @@ function App() {
   const [isEdit, setIsEdit] = useState(false)
   const [willUpdateTodo, setWillUpdateTodo] = useState('')
 
+  useEffect(() => {
+    const todosFromLocalStorage = localStorage.getItem('todos')
+
+    if (todosFromLocalStorage === null) {
+      localStorage.setItem('todos', JSON.stringify([]))
+    } else {
+      setTodos(JSON.parse(todosFromLocalStorage))
+    }
+  }, [])
+
   const deleteTodo = (id) => {
     const filteredTodo = todos.filter((item) => item.id !== id)
     setTodos(filteredTodo)
+    localStorage.setItem('todos', JSON.stringify(filteredTodo))
   }
 
   const changeIsDone = (id) => {
@@ -22,6 +33,10 @@ function App() {
     }
     const filteredTodo = todos.filter((item) => item.id !== id)
     setTodos([updatedTodo, ...filteredTodo])
+    localStorage.setItem(
+      'todos',
+      JSON.stringify([updatedTodo, ...filteredTodo]),
+    )
   }
 
   const handleSubmit = (event) => {
@@ -46,6 +61,10 @@ function App() {
       setTodoText('')
       setIsEdit(false)
       setWillUpdateTodo('')
+      localStorage.setItem(
+        'todos',
+        JSON.stringify([updatedTodo, ...filteredTodo]),
+      )
     } else {
       const newTodo = {
         id: new Date().getTime(),
@@ -55,6 +74,7 @@ function App() {
       }
       setTodos([newTodo, ...todos])
       setTodoText('')
+      localStorage.setItem('todos', JSON.stringify([newTodo, ...todos]))
     }
   }
 
