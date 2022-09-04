@@ -8,4 +8,4 @@ In the project directory, you can run:
 
 ### `npm start`
 
-![https://github.com/bakiensar/react-todoapp/blob/master/todo-react-gif.gif]
+![(https://github.com/bakiensar/react-todoapp/blob/master/todo-react-gif.gif)]
